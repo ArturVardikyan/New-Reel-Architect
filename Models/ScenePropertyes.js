@@ -53,4 +53,3 @@ const SceneReactiveProperty = {
     HasFreeBetAmountVariant : new ReactiveProperty(true),
     CanCallStop : new ReactiveProperty([true,false,false,false,false]),
 }
-const ReelsStops = [true,false,false,false,false]

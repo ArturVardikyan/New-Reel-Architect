@@ -68,7 +68,7 @@ class ReelContainerViewNew {
         this.ReelsContainer.zIndex = 5
         TempMaskGraphic.position.x = config.reelsSpacing+20
         TempMaskGraphic.position.y = config.reelsSpacing+5
-        this.ReelsContainer.mask = TempMaskGraphic
+        //this.ReelsContainer.mask = TempMaskGraphic
     }
     InitProperties() {
         this._reactiveProperty.SpinningAudioPunch.subscribe(_ => {
@@ -76,24 +76,23 @@ class ReelContainerViewNew {
                 this._spiningAudio.pitch = _;
             }
         });
-        this._reactiveProperty.ForceStop.subscribe(_ => {
-            if (!_) return;
-            this._reactiveProperty.SpinningAudioPunch.value = 1;
-            if (this._slowMode) {
-                //Time.timeScale = this._reactiveProperty.ForceSpeedvalue.value * 2;
-                if (this._reactiveProperty.TurboMode.value === 1) {
-                    this._reelsConfig.SetTimeScale2();
-                } else if (this._reactiveProperty.TurboMode.value === 0.5) {
-                    this._reelsConfig.SetTimeScale1();
-                }
-            } else {
-                if (this._reactiveProperty.TurboMode.value !== 3) {
-                    //Time.timeScale = 1;
-                    this._reelsConfig.SetTimeScale1();
-                }
-
-            }
-        });
+        // this._reactiveProperty.ForceStop.subscribe(_ => {
+        //     if (!_) return;
+        //     //this._reactiveProperty.SpinningAudioPunch.value = 1;
+        //     if (this._slowMode) {
+        //         if (this._reactiveProperty.TurboMode.value === 1) {
+        //             this._reelsConfig.SetTimeScale2();
+        //         } else if (this._reactiveProperty.TurboMode.value === 0.5) {
+        //             this._reelsConfig.SetTimeScale1();
+        //         }
+        //     } else {
+        //         if (this._reactiveProperty.TurboMode.value !== 3) {
+        //             //Time.timeScale = 1;
+        //             this._reelsConfig.SetTimeScale1();
+        //         }
+        //
+        //     }
+        // });
         this._reactiveProperty.ForceStop.subscribe(stop => {
             if (stop) {
                 this.Skip();
@@ -236,7 +235,7 @@ class ReelContainerViewNew {
         this._exitBonusScene = false;
         this._uiReactive.GuaranteedWinPreviewState.value = this._uiReactive.GuaranteedWin.value;
 
-        if (this._reactiveProperty.TurboSpin.value) {
+        if (this._reactiveProperty.TurboMode.value) {
             //Time.timeScale = this._reactiveProperty.ForceSpeedvalue.value;
             if (this._reactiveProperty.TurboMode.value === 1) {
                 this._reelsConfig.SetTimeScale1();
@@ -264,7 +263,7 @@ class ReelContainerViewNew {
         //this.SoundManager.Instance.PlaySpinSound();///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         for (let reel of this._reels) {
             reel.RotateReel();
-            if (!this._reactiveProperty.TurboSpin.value) {
+            if (this._reactiveProperty.TurboMode.value !== 3) {
                 if (this._reelsConfig.introSecondsBetweenReels > 0) {
                     await new Promise(resolve => setTimeout(resolve, this._reelsConfig.introSecondsBetweenReels*1000));
                 }

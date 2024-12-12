@@ -36,21 +36,28 @@ class TurboButton {
         this.button.on('pointerout', this.onButtonOut);
         this.button.on('pointerup',this.onButtonUp)
         this.container.addChild(this.button);
-        SceneReactiveCommands.ChangeTurboMode
-        .subscribe(_=>{
-
-            if (this.reactiveProperty.TurboMode.value == 1){
+        SceneReactiveCommands.ChangeTurboMode.subscribe(_=>{
+            if (this.reactiveProperty.TurboMode.value === 1){
                 this.reactiveProperty.TurboMode.value = 2
+                for (let i = 1;i < config.reelsCount;i++){
+                    this.reactiveProperty.CanCallStop.value[i] = false;
+                }
             }
-            else if (this.reactiveProperty.TurboMode.value == 2){
+            else if (this.reactiveProperty.TurboMode.value === 2){
                 this.reactiveProperty.TurboMode.value = 3
+                for (let i = 0;i < config.reelsCount;i++){
+                    this.reactiveProperty.CanCallStop.value[i] = true;
+                }
             }
             else if (this.reactiveProperty.TurboMode.value == 3){
                 this.reactiveProperty.TurboMode.value = 1
+                for (let i = 1;i < config.reelsCount;i++){
+                    this.reactiveProperty.CanCallStop.value[i] = false;
+                }
             }
             console.log("Mode changed to - " + this.reactiveProperty.TurboMode.value)
         })
-        this.reactiveProperty.TurboMode.asObservable().subscribe(value => {
+        this.reactiveProperty.TurboMode.subscribe(value => {
             if (value == 1) {
                 config.SetTimeScale1()
                 this.buttonText.text = "normal"
@@ -60,7 +67,7 @@ class TurboButton {
                 this.buttonText.text = "fast"
             }
             else if (value == 3) {
-                config.SetTimeScale2()
+                config.SetTimeScale3()
                 this.buttonText.text = "turbo"
             }
         })

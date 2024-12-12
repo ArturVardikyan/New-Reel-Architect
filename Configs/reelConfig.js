@@ -7,7 +7,7 @@ const config = {
     topSymbolsSpacing: 50,
     symbolsSpacing: 5,
     introDuration: 1,
-    symbolSize: { width: 70, height:  70 },
+    symbolSize: { width: 50, height:  50 },
     speedDuration: 2,
     forceStopDuration: 0.25,
     stopDuration: 0.5,
@@ -28,10 +28,8 @@ const config = {
         config.introDuration = 0;
         config.introSecondsBetweenReels = 0;
         config.speedDuration = 0.32;
-        config.speedFastDuration = config.speedDuration/9*5;
         config.forceStoptopDuration = 0.1;
         config.stopDuration = config.speedDuration*1.2;
-        config.stopFastDuration = config.speedDuration/1.1;
         config.stopSecondsBetweenReels = 0;
         config.stopSlowDuration = 0.5;
         config.stopDelay = 0.3;
@@ -47,10 +45,10 @@ const config = {
     },
     SetTimeScale2: ()=>{
         config.introDuration = 0.1;
-        config.introSecondsBetweenReels = 0.1;
-        config.speedDuration = 0.1;
+        config.introSecondsBetweenReels = 0;
+        config.speedDuration = 0.32//config.speedDuration;///9*5;
         config.forceStoptopDuration = 0.05;
-        config.stopDuration = 0.25;
+        config.stopDuration = config.speedDuration/100;
         config.stopSecondsBetweenReels = 0.05;
         config.stopSlowDuration = 0.25;
         config.stopDelay = 0.15;
@@ -62,6 +60,24 @@ const config = {
         config.wildSymbolDetectionDelay = 0.2;
         config.wildSymbolSwitchDelay = 0.3;
         config.wildSymbolReelDelay = 0.35;
+    },
+    SetTimeScale3: ()=>{
+        config.introDuration = 0;
+        config.introSecondsBetweenReels = 0;
+        config.speedDuration = 0.32//9*6;
+        config.forceStoptopDuration = 0.1;
+        config.stopDuration = 0.112;
+        config.stopSecondsBetweenReels = 0;
+        config.stopSlowDuration = 0.5;
+        config.stopDelay = 0.3;
+        config.stopSlowDuration = 0.5;
+        config.expandWildDuration = 1;
+        config.showWinDelay = 0.5;
+        config.showWinPopupDuration = 2.0;
+        config.showWinDuration = 3.0;
+        config.wildSymbolDetectionDelay = 0.4;
+        config.wildSymbolSwitchDelay = 0.6;
+        config.wildSymbolReelDelay = 0.7;
     },
     SetTimeScale0_5: ()=>{
         config.introDuration = 0.4;
