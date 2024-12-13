@@ -300,7 +300,7 @@ class Reel {
             containerPos.set(containerPos.x, posStart);
 
         } else if (TurboMode.value === 3) {
-            posStart = globalStartPosY ;
+            posStart = globalStartPosY - visibleSymbolsCount * SymbolBlock;
             posEnd = globalStartPosY + visibleSymbolsCount * SymbolBlock;
             duration = (config.speedDuration * 1000 / 9 * 5); // эквивалент config.speedDuration * 1000 / 9 * 6
             this.SetRandomSymbolsOnLoopStartMode3()
@@ -314,6 +314,14 @@ class Reel {
             duration: duration,
             easing: AnimationConfigs.loop,
             loop: -1,
+            begin:async ()=>{
+                if (TurboMode.value === 3){
+                    this.animation.pause()
+                    this.animation .seek(duration/2)
+                    this.animation.play()
+                    this.SetRandomSymbolsOnLoopStartMode3()
+                }
+            },
             loopBegin: async () => {
                 if (!firstLoop) {
                     if (TurboMode.value === 1) {
@@ -330,35 +338,6 @@ class Reel {
                 }
                 if (!IsReelsRotate.value) {
                     this.Stop();
-                } else if (IsReelsRotate.value && TurboMode.value === 3 && !firstLoop) {
-                    this.SetRandomSymbolsOnLoopMode1()
-                    if (firstLoop) {
-                        this.SetRandomSymbolsOnSecondLoopStartMode3()
-                    }
-                    this.animation.remove(this.container);
-                    containerPos.set(containerPos.x, globalStartPosY + posStart);
-                    this.animation = anime({
-                        targets: this.container,
-                        y: posEnd,
-                        duration: config.speedDuration * 1000,
-                        easing: AnimationConfigs.loop,
-                        loop: -1,
-                        loopBegin: async () => {
-                            if (TurboMode.value === 1) {
-                                this.SetRandomSymbolsOnLoopMode1()
-                            } else if (TurboMode.value === 3 && !firstLoop2) {
-                                this.SetRandomSymbolsOnLoopMode1()
-                            }
-                            else if(TurboMode.value === 3 && firstLoop2) {
-
-                            }
-                            if (!IsReelsRotate.value) {
-                                this.Stop();
-                            }
-                            firstLoop2 = false
-                        },
-                    });
-
                 }
                 firstLoop = false
             },
@@ -443,17 +422,16 @@ class Reel {
 
     SetRandomSymbolsOnLoopStartMode3() {
 
-        // let symbolsVisible1 = []
-        // for (let i = config.visibleSymbolsCount; i < 2 * config.visibleSymbolsCount; i++) {
-        //     symbolsVisible1.push(this.symbols[i].index);
-        // }
-        //
-        // for (let i = config.visibleSymbolsCount*2; i < config.symbolsCount; i++) {
-        //     //this.symbols[i].SetSymbolByIndex(symbolsVisible1[config.visibleSymbolsCount*2])
-        // }
-        // for (let i = 0; i < config.symbolsCount - config.visibleSymbolsCount; i++) {
-        //     this.symbols[i].SetRandomSymbol()
-        // }
+        let symbolsVisible1 = []
+        for (let i = config.visibleSymbolsCount; i < 2 * config.visibleSymbolsCount; i++) {
+            symbolsVisible1.push(this.symbols[i].index);
+        }
+        for (let i = config.visibleSymbolsCount*2; i < config.symbolsCount; i++) {
+            this.symbols[i].SetSymbolByIndex(symbolsVisible1[i-config.visibleSymbolsCount*2])
+        }
+        for (let i = 0; i < config.symbolsCount - config.visibleSymbolsCount; i++) {
+            this.symbols[i].SetRandomSymbol()
+        }
     }
     SetRandomSymbolsOnSecondLoopStartMode3(){
         // let symbolsVisible1 = []
@@ -585,18 +563,18 @@ class Reel {
         await new Promise(resolve => setTimeout(resolve, 0))
 
         if (this.index === 1){
-            await new Promise(resolve => setTimeout(resolve , 100))
+            await new Promise(resolve => setTimeout(resolve , 30))
         }
         else if(this.index === 2){
-            await new Promise(resolve => setTimeout(resolve , 200))
+            await new Promise(resolve => setTimeout(resolve , 60))
         }
         else if(this.index === 3){
-            await new Promise(resolve => setTimeout(resolve , 300))
+            await new Promise(resolve => setTimeout(resolve , 90))
         }
         else if(this.index === 4){
-            await new Promise(resolve => setTimeout(resolve , 400))
+            await new Promise(resolve => setTimeout(resolve , 120))
         }
-
+        console.log(this.animation , this.index)
         this.animation.remove(this.container)
         let duration = config.speedDuration
         let endPos = this.startPositionY
@@ -715,7 +693,7 @@ class Reel {
         let pos = this.startPositionY;
         this.animation = gsap.to(this.container, {
             y: pos,
-            duration: 5,//config.forceStopDuration,
+            duration: config.forceStopDuration,
             ease: AnimationConfigs.stopNormal,
         });
         this.stopReels = true;

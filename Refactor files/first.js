@@ -42,7 +42,7 @@ const spinButton = new SpinButton(app.stage,()=>{
             SceneReactiveProperty.IsReelsRotate.value = false
         }
 
-    }, 7000);
+    }, 1000);
 
 });
 const turboButton = new TurboButton(app.stage,()=>{
