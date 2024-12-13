@@ -40,7 +40,7 @@ class TurboButton {
             if (this.reactiveProperty.TurboMode.value === 1){
                 this.reactiveProperty.TurboMode.value = 2
                 for (let i = 1;i < config.reelsCount;i++){
-                    this.reactiveProperty.CanCallStop.value[i] = false;
+                    this.reactiveProperty.CanCallStop.value[i] = true;
                 }
             }
             else if (this.reactiveProperty.TurboMode.value === 2){

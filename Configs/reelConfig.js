@@ -7,7 +7,7 @@ const config = {
     topSymbolsSpacing: 50,
     symbolsSpacing: 5,
     introDuration: 1,
-    symbolSize: { width: 50, height:  50 },
+    symbolSize: { width: 80, height:  80 },
     speedDuration: 2,
     forceStopDuration: 0.25,
     stopDuration: 0.5,
@@ -46,9 +46,9 @@ const config = {
     SetTimeScale2: ()=>{
         config.introDuration = 0.1;
         config.introSecondsBetweenReels = 0;
-        config.speedDuration = 0.32//config.speedDuration;///9*5;
+        config.speedDuration = 2//0.32//config.speedDuration;///9*5;
         config.forceStoptopDuration = 0.05;
-        config.stopDuration = config.speedDuration/100;
+        config.stopDuration = config.speedDuration*100///100;
         config.stopSecondsBetweenReels = 0.05;
         config.stopSlowDuration = 0.25;
         config.stopDelay = 0.15;
@@ -64,7 +64,7 @@ const config = {
     SetTimeScale3: ()=>{
         config.introDuration = 0;
         config.introSecondsBetweenReels = 0;
-        config.speedDuration = 0.32//9*6;
+        config.speedDuration = 9//0.32//9*6;
         config.forceStoptopDuration = 0.1;
         config.stopDuration = 0.112;
         config.stopSecondsBetweenReels = 0;

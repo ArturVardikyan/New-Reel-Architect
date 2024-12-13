@@ -303,9 +303,10 @@ class Reel {
             posStart = globalStartPosY ;
             posEnd = globalStartPosY + visibleSymbolsCount * SymbolBlock;
             duration = (config.speedDuration * 1000 / 9 * 5); // эквивалент config.speedDuration * 1000 / 9 * 6
-
+            this.SetRandomSymbolsOnLoopStartMode3()
             containerPos.set(containerPos.x, posStart);
         }
+        let firstLoop2 = true
         let firstLoop = true
         this.animation = anime({
             targets: this.container,
@@ -331,7 +332,6 @@ class Reel {
                     this.Stop();
                 } else if (IsReelsRotate.value && TurboMode.value === 3 && !firstLoop) {
                     this.SetRandomSymbolsOnLoopMode1()
-                    let firstLoop2 = true
                     if (firstLoop) {
                         this.SetRandomSymbolsOnSecondLoopStartMode3()
                     }
@@ -443,17 +443,17 @@ class Reel {
 
     SetRandomSymbolsOnLoopStartMode3() {
 
-        let symbolsVisible1 = []
-        for (let i = config.visibleSymbolsCount; i < 2 * config.visibleSymbolsCount; i++) {
-            symbolsVisible1.push(this.symbols[i].index);
-        }
-
-        for (let i = 3; i < config.visibleSymbolsCount + 3; i++) {
-            this.symbols[i].SetSymbolByIndex(symbolsVisible1[i - 3])
-        }
-        for (let i = 0; i < config.symbolsCount - config.visibleSymbolsCount; i++) {
-            this.symbols[i].SetRandomSymbol()
-        }
+        // let symbolsVisible1 = []
+        // for (let i = config.visibleSymbolsCount; i < 2 * config.visibleSymbolsCount; i++) {
+        //     symbolsVisible1.push(this.symbols[i].index);
+        // }
+        //
+        // for (let i = config.visibleSymbolsCount*2; i < config.symbolsCount; i++) {
+        //     //this.symbols[i].SetSymbolByIndex(symbolsVisible1[config.visibleSymbolsCount*2])
+        // }
+        // for (let i = 0; i < config.symbolsCount - config.visibleSymbolsCount; i++) {
+        //     this.symbols[i].SetRandomSymbol()
+        // }
     }
     SetRandomSymbolsOnSecondLoopStartMode3(){
         // let symbolsVisible1 = []
@@ -583,20 +583,33 @@ class Reel {
     async StopFast() {
 
         await new Promise(resolve => setTimeout(resolve, 0))
-        this.reactiveProperty.CanCallStop.value[this.index+1] = true;
+
+        if (this.index === 1){
+            await new Promise(resolve => setTimeout(resolve , 100))
+        }
+        else if(this.index === 2){
+            await new Promise(resolve => setTimeout(resolve , 200))
+        }
+        else if(this.index === 3){
+            await new Promise(resolve => setTimeout(resolve , 300))
+        }
+        else if(this.index === 4){
+            await new Promise(resolve => setTimeout(resolve , 400))
+        }
+
         this.animation.remove(this.container)
-        let duration = config.stopDuration
+        let duration = config.speedDuration
         let endPos = this.startPositionY
         this.animation = gsap.to(this.container, {
             y: endPos,
-            duration: duration,
+            duration: 1,
             ease: "customStopNormal",
             onComplete: async () => {
-                if (this.index === 4) {
-                    for (let i = 1; i < config.reelsCount; i++) {
-                        this.reactiveProperty.CanCallStop.value[i] = false;
-                    }
-                }
+                // if (this.index === 4) {
+                //     for (let i = 1; i < config.reelsCount; i++) {
+                //         this.reactiveProperty.CanCallStop.value[i] = false;
+                //     }
+                // }
             }
         });
     }
@@ -702,7 +715,7 @@ class Reel {
         let pos = this.startPositionY;
         this.animation = gsap.to(this.container, {
             y: pos,
-            duration: config.forceStopDuration,
+            duration: 5,//config.forceStopDuration,
             ease: AnimationConfigs.stopNormal,
         });
         this.stopReels = true;
